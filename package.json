@@ -1,6 +1,6 @@
 {
   "name": "@aster/timeline",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -9,7 +9,7 @@
     "build": "tsc && copyfiles -f ./src/*.css lib",
     "debug": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start karma.debug.js",
     "test": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start",
-    "demo": "tsc --project demo/tsconfig.json && rollup -c demo/rollup.config.js"
+    "demo": "copyfiles -f node_modules/@vscode/codicons/dist/codicon.svg .bin& tsc --project demo/tsconfig.json && rollup -c demo/rollup.config.js"
   },
   "author": "sebdoucet",
   "license": "ISC",
@@ -29,6 +29,7 @@
     "@types/chai": "4.2.14",
     "@types/mocha": "8.2.0",
     "@types/sinon": "9.0.10",
+    "@vscode/codicons": "0.0.27",
     "chai": "4.3.0",
     "copyfiles": "^2.4.1",
     "karma": "^6.1.0",

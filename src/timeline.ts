@@ -1,7 +1,7 @@
 import { IIoCModule, IoCKernel, ServiceCollection, ServiceContract } from "@aster-js/ioc";
 import { Constructor } from "@aster-js/core";
 import { LitElement, html, HTMLTemplateResult, unsafeCSS } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { ITimelineRenderer } from "./abstraction";
 import { AsterTooltipService, DefaultTimelineRenderer, DefaultTimelineStepRenderer } from "./defaults";
 import styles from "./timeline.css";
@@ -12,11 +12,16 @@ export class Timeline extends LitElement {
 
     static readonly styles = unsafeCSS(styles);
 
-    layout: "vertical" | "horizontal" = "vertical";
+    @property({ type: String })
+    layout: "vertical" | "horizontal" = "horizontal";
 
+    @property()
     items: any[] = [];
 
-    async load(iocModule?: IIoCModule): Promise<void> {
+    @property({ type: Boolean })
+    autoInit: boolean = true;
+
+    init(iocModule?: IIoCModule): void {
         const scope = iocModule ? iocModule.createChildScope("grid") : IoCKernel.create();
         this._module = scope.configure(s => this.configure(s)).build();
     }
@@ -35,13 +40,18 @@ export class Timeline extends LitElement {
     }
 
     protected render(): HTMLTemplateResult {
-        return html`<div class="container">${this.renderSteps()}</div>`;
+        return html`<div class="container ${this.layout}">${this.renderSteps()}</div>`;
     }
 
     protected *renderSteps(): IterableIterator<HTMLTemplateResult | HTMLElement> {
-        if (this.items.length && this._module) {
-            const renderer = this._module.services.get(ITimelineRenderer, true);
-            yield* renderer.render(this.items);
+        if (this.items.length) {
+            if (!this._module && this.autoInit) {
+                this.init();
+            }
+            if (this._module) {
+                const renderer = this._module.services.get(ITimelineRenderer, true);
+                yield* renderer.render(this.items);
+            }
         }
     }
 }
