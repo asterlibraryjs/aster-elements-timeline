@@ -1,4 +1,5 @@
-import { IIoCModule, IoCKernel, ServiceCollection, ServiceContract } from "@aster-js/ioc";
+import { IDisposable } from "@aster-js/core";
+import { IIoCModule, IoCKernel, ServiceCollection, ServiceContract, ServiceDescriptor, ServiceLifetime, ServiceScope } from "@aster-js/ioc";
 import { Constructor } from "@aster-js/core";
 import { LitElement, html, HTMLTemplateResult, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -18,8 +19,8 @@ export class Timeline extends LitElement {
     @property()
     items: any[] = [];
 
-    @property({ type: Boolean })
-    autoInit: boolean = true;
+    @property({ type: Boolean, attribute: "manual-init" })
+    manualInit?: boolean;
 
     init(iocModule?: IIoCModule): void {
         const scope = iocModule ? iocModule.createChildScope("grid") : IoCKernel.create();
@@ -36,7 +37,18 @@ export class Timeline extends LitElement {
 
     protected tryAddDefaultImpl<T>(services: ServiceCollection, ctor: Constructor<T>): void {
         const serviceId = ServiceContract.resolve(ctor);
-        if (serviceId && !services.has(serviceId)) services.addSingleton(ctor);
+        if (serviceId && !services.has(serviceId)) {
+            const desc = new ServiceDescriptor(serviceId, ServiceLifetime.scoped, ServiceScope.container, ctor, [], false);
+            services.add(desc);
+        }
+    }
+
+    protected update(changedProperties: Map<string | number | symbol, unknown>): void {
+        if (changedProperties.has("layout") || changedProperties.has("manualInit")) {
+            IDisposable.safeDispose(this._module);
+            this._module = null;
+        }
+        super.update(changedProperties);
     }
 
     protected render(): HTMLTemplateResult {
@@ -45,7 +57,7 @@ export class Timeline extends LitElement {
 
     protected *renderSteps(): IterableIterator<HTMLTemplateResult | HTMLElement> {
         if (this.items.length) {
-            if (!this._module && this.autoInit) {
+            if (!this._module && !this.manualInit) {
                 this.init();
             }
             if (this._module) {
