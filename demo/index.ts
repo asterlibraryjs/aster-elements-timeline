@@ -1,4 +1,4 @@
 import "../src";
-import "./custom-detail";
 import "./custom-step";
+import "./custom-detail";
 import "./demo-timeline";

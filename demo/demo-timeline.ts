@@ -30,7 +30,7 @@ export class CustomDetail extends LitElement {
     }
 
     getIcon(item: any, idx: number) {
-        return html`<aster-demo-custom-step .type="${item.succeed ? "succeed" : "failed"}"></aster-demo-custom-step>`;
+        return html`<aster-demo-custom-step .type="${item.succeed ? "ok" : "warn"}"></aster-demo-custom-step>`;
     }
 
     getTooltip() {

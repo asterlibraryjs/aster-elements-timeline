@@ -1,0 +1,55 @@
+:host {
+    display: block;
+}
+.circle {
+    border-radius: 50%;
+    width:25px;
+    height:25px;
+}
+.rounded {
+    border-radius: 5px;
+    width:25px;
+    height:25px;
+}
+
+.none {
+    border: 4px solid rgb(137 213 137);
+    background-color: #2a852a;
+}
+
+.progress {
+    border: 4px solid rgb(137 213 137);
+    background-color: #2a852a;
+}
+
+.info {
+    border: 4px solid rgb(99, 154, 241);
+    background-color: #1952bb;
+}
+
+.ask {
+    border: 4px solid rgb(96, 235, 154);
+    background-color: #209aaa;
+}
+
+.ok {
+    border: 4px solid rgb(137 213 137);
+    background-color: #2a852a;
+}
+
+.warn {
+    border: 4px solid rgb(206, 214, 206);
+    background-color: #7f867f;
+}
+
+.error {
+    border: 4px solid rgb(137 213 137);
+    background-color: #2a852a;
+}
+
+svg {
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    padding: 3px;
+}

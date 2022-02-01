@@ -1,12 +1,12 @@
 {
   "name": "@aster-elements/timeline",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./lib/aster-timeline.js",
+  "types": "./lib/src/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc && copyfiles -f ./src/*.css lib",
+    "build": "tsc && rollup -c",
     "debug": "tsc --project tests/tsconfig.json && rollup -c tests/rollup.config.js && karma start karma.debug.js",
     "test": "tsc --project tests/tsconfig.json && rollup -c tests/rollup.config.js && karma start",
     "demo": "copyfiles -f node_modules/@vscode/codicons/dist/codicon.svg .bin& tsc --project demo/tsconfig.json && rollup -c demo/rollup.config.js"
@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@aster-js/ioc": "0.0.1",
-    "@aster-elements/tooltip": "1.0.2",
+    "@aster-elements/tooltip": "1.0.5",
     "lit": "^2.1.2",
     "moment": "^2.29.1",
     "tslib": "^2.3.1"
@@ -27,7 +27,7 @@
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/chai": "4.3.0",
     "@types/mocha": "9.1.0",
-    "@types/sinon": "10.0.8",
+    "@types/sinon": "10.0.9",
     "@vscode/codicons": "0.0.27",
     "chai": "4.3.6",
     "copyfiles": "^2.4.1",
@@ -38,12 +38,12 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-sinon": "1.0.5",
     "mocha": "^9.2.0",
-    "puppeteer": "^13.1.2",
+    "puppeteer": "^13.1.3",
     "rollup": "^2.66.1",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-import-css": "^3.0.2",
     "rollup-plugin-sourcemaps": "^0.6.3",
-    "sinon": "12.0.1",
+    "sinon": "13.0.0",
     "typescript": "^4.5.5"
   }
 }
