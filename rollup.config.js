@@ -1,9 +1,7 @@
 import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
 import sourcemap from "rollup-plugin-sourcemaps";
 import css from "rollup-plugin-import-css";
 import copy from "rollup-plugin-copy";
-import pkg from "./package.json";
 
 export default [
     {
