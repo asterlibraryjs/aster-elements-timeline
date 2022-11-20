@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { ITimelineStepRenderer, ITooltipService } from "../abstraction";
+import { ITimelineStepRenderer, ITooltipService, TimelineLayout, TimelineRenderingOptions } from "../abstraction";
 
 export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T> {
 
@@ -7,60 +7,77 @@ export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T
         private readonly _toolTipService: ITooltipService
     ) { }
 
-    renderLead(item: T, index: number, items: T[]): unknown {
-        const leadColumn = (index - 1) * 2 + 2; // Every 2 columns starting at column 2
-        const duration = this.resolveLeadTime(items[index - 1], item);
-        return html`<aster-timeline-lead style="grid-column: ${leadColumn}" .duration=${duration}></aster-timeline-lead>`;
+    renderLead(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown {
+        const leadStyle =this.resolveLeadLayout(index, opts.layout);
+        const duration = this.resolveLeadTime(items[index - 1], item, opts);
+        return html`<aster-timeline-lead style=${leadStyle} .layout=${opts.layout} .duration=${duration} .alternate=${index%2 !== 0}></aster-timeline-lead>`;
     }
 
-    protected abstract resolveLeadTime(first: T, second: T): number;
+    protected abstract resolveLeadTime(first: T, second: T, opts: TimelineRenderingOptions): number;
 
-    renderDetail(item: T, index: number, items: T[]): unknown {
-        const stepColumn = this.resolveStepColumn(index);
-        const detailColumn = this.resolveDetailColumn(index);
-        const detailRow = this.resolveDetailRow(index);
+    renderDetail(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown {
+        const blockquoteStyle = this.resolveBlockquoteLayout(index, opts.layout);
+        const detailStyle = this.resolveDetailLayout(index, opts.layout);
 
-        const detail = this.renderDetailContent(item, index, items);
+        const detail = this.renderDetailContent(item, index, items, opts);
         if (detail) {
             return html`
-            <aster-timeline-blockquote style="${detailRow};${stepColumn}"></aster-timeline-blockquote>
-            <aster-timeline-detail style="${detailRow};${detailColumn}">
+            <aster-timeline-blockquote style=${blockquoteStyle} .layout=${opts.layout}></aster-timeline-blockquote>
+            <aster-timeline-detail style=${detailStyle} .layout=${opts.layout}>
                 ${detail}
             </aster-timeline-detail>`;
         }
     }
 
-    protected abstract renderDetailContent(item: T, index: number, items: T[]): unknown;
+    protected abstract renderDetailContent(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown;
 
-    renderStep(item: T, index: number, items: T[]): unknown {
-        const stepColumn = this.resolveStepColumn(index);
+    renderStep(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown {
+        const stepColumn = this.resolveStepLayout(index, opts.layout);
         return html`<aster-timeline-step
-            style="${stepColumn}"
-            @mouseenter="${(ev: UIEvent) => this.onDidMouseEnterStep(ev, item, index, items)}">
-            ${this.renderStepContent(item, index, items)}
+            style=${stepColumn}
+            .layout=${opts.layout}
+            @mouseenter="${(ev: UIEvent) => this.onDidMouseEnterStep(ev, item, index, items, opts)}">
+            ${this.renderStepContent(item, index, items, opts)}
         </aster-timeline-step>`;
     }
 
-    protected abstract renderStepContent(item: T, index: number, items: T[]): unknown;
+    protected abstract renderStepContent(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown;
 
-    protected onDidMouseEnterStep(ev: UIEvent, item: T, index: number, items: T[]): void {
-        const content = this.renderTooltipContent(item, index, items);
+    protected onDidMouseEnterStep(ev: UIEvent, item: T, index: number, items: T[], opts: TimelineRenderingOptions): void {
+        const content = this.renderTooltipContent(item, index, items, opts);
         if (content) {
             this._toolTipService.show(ev, content);
         }
     }
 
-    protected abstract renderTooltipContent(item: T, index: number, items: T[]): unknown;
+    protected abstract renderTooltipContent(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown;
 
-    protected resolveStepColumn(index: number): string {
-        return `grid-column:${index * 2 + 1}`;
+    protected resolveLeadLayout(index: number, layout: TimelineLayout): string {
+        const leadColumn = (index - 1) * 2 + 2;
+        if (layout == "horizontal") {
+            return `grid-column: ${leadColumn}`;
+        }
+        return `grid-row: ${leadColumn}`;
     }
 
-    protected resolveDetailColumn(index: number): string {
-        return `grid-column:${index * 2 + 2}/span 2`;
+    protected resolveBlockquoteLayout(index: number, layout: TimelineLayout): string {
+        if (layout == "horizontal") {
+            return `grid-column:${index * 2 + 1}; grid-row:${index % 2 === 0 ? 1 : 3}`;
+        }
+        return `grid-row:${index * 2 + 1}; grid-column:${index % 2 === 0 ? 1 : 3}`;
     }
 
-    protected resolveDetailRow(index: number): string {
-        return `grid-row:${index % 2 === 0 ? 1 : 3}`;
+    protected resolveDetailLayout(index: number, layout: TimelineLayout): string {
+        if (layout == "horizontal") {
+            return `grid-column:${index * 2 + 2}/span 2; grid-row:${index % 2 === 0 ? 1 : 3}`;
+        }
+        return `grid-row:${index * 2 + 2}/span 2;grid-column:${index % 2 === 0 ? 1 : 3}`;
+    }
+
+    protected resolveStepLayout(index: number, layout: TimelineLayout): string {
+        if (layout == "horizontal") {
+            return `grid-column:${index * 2 + 1}`;
+        }
+        return `grid-row:${index * 2 + 1}`;
     }
 }
