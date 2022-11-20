@@ -3,7 +3,7 @@ import { IIoCModule, IoCKernel, ServiceCollection, ServiceContract, ServiceDescr
 import { Constructor } from "@aster-js/core";
 import { LitElement, html, HTMLTemplateResult, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ITimelineRenderer } from "./abstraction";
+import { ITimelineRenderer, TimelineLayout } from "./abstraction";
 import { AsterTooltipService, DefaultTimelineRenderer, DefaultTimelineStepRenderer } from "./defaults";
 import styles from "./timeline.css";
 
@@ -14,7 +14,7 @@ export class Timeline extends LitElement {
     static readonly styles = unsafeCSS(styles);
 
     @property({ type: String })
-    layout: "vertical" | "horizontal" = "horizontal";
+    layout: TimelineLayout = "horizontal";
 
     @property()
     items: any[] = [];
@@ -62,7 +62,7 @@ export class Timeline extends LitElement {
             }
             if (this._module) {
                 const renderer = this._module.services.get(ITimelineRenderer, true);
-                yield* renderer.render(this.items);
+                yield* renderer.render(this.items, { layout: this.layout });
             }
         }
     }

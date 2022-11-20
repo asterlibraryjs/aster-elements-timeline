@@ -1,6 +1,6 @@
 import { ServiceContract } from "@aster-js/ioc";
 import { html, HTMLTemplateResult } from "lit";
-import { ITimelineStepRenderer, ITooltipService } from "../abstraction";
+import { ITimelineStepRenderer, ITooltipService, TimelineRenderingOptions } from "../abstraction";
 import { DefaultTimelineStep } from "./default-timeline-step";
 import { TimelineStepRenderer } from "./timeline-step-renderer";
 
@@ -10,19 +10,19 @@ export class DefaultTimelineStepRenderer extends TimelineStepRenderer<DefaultTim
         @ITooltipService toolTipService: ITooltipService
     ) { super(toolTipService) }
 
-    protected resolveLeadTime(first: DefaultTimelineStep, second: DefaultTimelineStep) {
+    protected resolveLeadTime(first: DefaultTimelineStep, second: DefaultTimelineStep, opts: TimelineRenderingOptions) {
         return second.date.getTime() - first.date.getTime();
     }
 
-    protected renderDetailContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[]): unknown {
+    protected renderDetailContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[], _opts: TimelineRenderingOptions): unknown {
         return this.resolveTemplateResult(item.detail, item, index, items);
     }
 
-    protected renderStepContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[]): unknown {
+    protected renderStepContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[], _opts: TimelineRenderingOptions): unknown {
         return this.resolveTemplateResult(item.icon, item, index, items);
     }
 
-    protected renderTooltipContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[]): unknown {
+    protected renderTooltipContent(item: DefaultTimelineStep, index: number, items: DefaultTimelineStep[], _opts: TimelineRenderingOptions): unknown {
         return this.resolveTemplateResult(item.tooltip, item, index, items);
     }
 

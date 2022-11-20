@@ -2,17 +2,15 @@
     display: block;
     font-size: var(--_aster-timeline__lead-time-font-size);
 }
+
 .container {
     display: grid;
     justify-items: center;
     align-items: center;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "duration" "lead"
+    height: 100%;
 }
 .line {
     grid-area: lead;
-    height: 3px;
-    width: 100%;
     background-color: var(--_aster-timeline__border-color);
 }
 .indicator {
@@ -21,4 +19,37 @@
     width: 6px;
     border-radius: 50%;
     background-color: var(--_aster-timeline__border-color);
+}
+.duration {
+    grid-area: duration;
+}
+
+.container.horizontal {
+    grid-template-rows: 1fr 25px 1fr;
+    grid-template-areas: "duration" "lead" "_"
+}
+.container.horizontal.alternate{
+    grid-template-areas: "_" "lead" "duration"
+}
+.horizontal .line {
+    height: 3px;
+    width: 100%;
+}
+
+.container.vertical {
+    grid-template-columns: 1fr 25px 1fr;
+    grid-template-areas: "duration lead _"
+}
+.container.vertical.alternate{
+    grid-template-areas: "_ lead duration"
+}
+.vertical .line {
+    width: 3px;
+    height: 100%;
+}
+.vertical .duration {
+    justify-self: flex-end;
+}
+.vertical.alternate .duration {
+    justify-self: flex-start;
 }
