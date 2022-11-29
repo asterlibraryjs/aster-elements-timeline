@@ -16,6 +16,8 @@ export class CustomDetail extends LitElement {
         }
         aster-timeline {
             --aster-timeline__border-color: #F8F8F2;
+            --aster-timeline__step-icon-size: 35px;
+            max-width: 100%;
             color: #F8F8F2;
         }`;
 

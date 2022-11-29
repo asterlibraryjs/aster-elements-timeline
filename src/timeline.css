@@ -1,29 +1,37 @@
 :host {
     --_aster-timeline__border-color: var(--aster-timeline__border-color, #808080);
+    --_aster-timeline__step-icon-size: var(--aster-timeline__step-icon-size, 26px);
     --_aster-timeline__lead-time-font-size: var(--aster-timeline__lead-time-font-size, 0.8em);
     display: block;
     box-sizing: border-box;
 }
 
+.container {
+    justify-items: center;
+    width: 100%;
+}
+
 .container.horizontal {
     display: grid;
-    grid-template-rows:  1fr minmax(0, max-content) 1fr;
-    grid-auto-columns: minmax(0, max-content) 1fr;
+    grid-template-rows:  minmax(0, 1fr) var(--_aster-timeline__step-icon-size) minmax(0, 1fr);
+    grid-auto-columns: minmax(0, max-content) minmax(0, 1fr);
 }
 
 .container.vertical {
     display: grid;
     gap: 0 10px;
-    grid-auto-rows: minmax(0, max-content) 1fr;
-    grid-template-columns: 1fr minmax(0, max-content) 1fr;
+    grid-auto-rows: minmax(0, max-content) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) var(--_aster-timeline__step-icon-size) minmax(0, 1fr);
 }
 
 .horizontal > aster-timeline-lead {
     grid-row: 2;
+    width: 100%;
 }
 
 .vertical > aster-timeline-lead {
     grid-column: 1 / span 3;
+    height: 100%;
 }
 
 .horizontal > aster-timeline-step {

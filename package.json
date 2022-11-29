@@ -1,6 +1,6 @@
 {
   "name": "@aster-elements/timeline",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "./lib/aster-timeline.js",
   "types": "./lib/src/index.d.ts",
