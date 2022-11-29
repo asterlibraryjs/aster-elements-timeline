@@ -43,3 +43,8 @@
     grid-column: 2;
     align-self: center;
 }
+
+.vertical > aster-timeline-blockquote {
+    width: 100%;
+    height: 100%;
+}
