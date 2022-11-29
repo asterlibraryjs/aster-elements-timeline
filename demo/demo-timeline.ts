@@ -9,13 +9,18 @@ export class CustomDetail extends LitElement {
     static styles = css`
         :host {
             display: block;
+            box-sizing: border-box;
+            padding: 5px;
         }
         h1 {
+            box-sizing: border-box;
             border-bottom: 1px dashed  #F8F8F2;
             color: #F8F8F2;
         }
         aster-timeline {
             --aster-timeline__border-color: #F8F8F2;
+            --aster-timeline__step-icon-size: 35px;
+            max-width: 100%;
             color: #F8F8F2;
         }`;
 
@@ -30,12 +35,11 @@ export class CustomDetail extends LitElement {
     }
 
     render(): HTMLTemplateResult {
-        return html`<div>
+        return html`
             <h1>Horizontal</h1>
             <aster-timeline .items="${this.items}"></aster-timeline>
             <h1>Vertical</h1>
-            <aster-timeline style="width: 900px; margin: 0 50px" .items="${this.items}" layout="vertical"></aster-timeline>
-        </div>`;
+            <aster-timeline style="width: 900px; margin: 0 50px" .items="${this.items}" layout="vertical"></aster-timeline>`;
     }
 
     getIcon(item: any, idx: number) {
