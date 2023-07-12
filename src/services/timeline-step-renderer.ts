@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { StyleInfo, styleMap} from "lit/directives/style-map.js"
 import { ITimelineStepRenderer, ITooltipService, TimelineLayout, TimelineRenderingOptions } from "../abstraction";
 
 export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T> {
@@ -16,16 +17,17 @@ export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T
     protected abstract resolveLeadTime(first: T, second: T, opts: TimelineRenderingOptions): number;
 
     renderDetail(item: T, index: number, items: T[], opts: TimelineRenderingOptions): unknown {
-        const blockquoteStyle = this.resolveBlockquoteLayout(index, opts.layout);
         const detailStyle = this.resolveDetailLayout(index, opts.layout);
 
         const detail = this.renderDetailContent(item, index, items, opts);
         if (detail) {
             return html`
-            <aster-timeline-blockquote style=${blockquoteStyle} .layout=${opts.layout}></aster-timeline-blockquote>
-            <aster-timeline-detail style=${detailStyle} .layout=${opts.layout}>
-                ${detail}
-            </aster-timeline-detail>`;
+            <div style=${styleMap(detailStyle)} class="aster-timeline-detail-container">
+                <aster-timeline-blockquote .layout=${opts.layout}></aster-timeline-blockquote>
+                <aster-timeline-detail .layout=${opts.layout}>
+                    ${detail}
+                </aster-timeline-detail>
+            </div>`;
         }
     }
 
@@ -60,18 +62,17 @@ export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T
         return `grid-row: ${leadColumn}`;
     }
 
-    protected resolveBlockquoteLayout(index: number, layout: TimelineLayout): string {
+    protected resolveDetailLayout(index: number, layout: TimelineLayout): StyleInfo {
         if (layout == "horizontal") {
-            return `grid-column:${index * 2 + 1}; grid-row:${index % 2 === 0 ? 1 : 3}`;
+            return {
+                "grid-column": `${index * 2 + 1}/span 3`,
+                "grid-row": `${index % 2 === 0 ? 1 : 3}`
+            };
         }
-        return `grid-row:${index * 2 + 1}; grid-column:${index % 2 === 0 ? 1 : 3}`;
-    }
-
-    protected resolveDetailLayout(index: number, layout: TimelineLayout): string {
-        if (layout == "horizontal") {
-            return `grid-column:${index * 2 + 2}/span 2; grid-row:${index % 2 === 0 ? 1 : 3}`;
-        }
-        return `grid-row:${index * 2 + 2}/span 2;grid-column:${index % 2 === 0 ? 1 : 3}`;
+        return {
+            "grid-row": `${index * 2 + 1}/span 3`,
+            "grid-column": `${index % 2 === 0 ? 1 : 3}`
+        };
     }
 
     protected resolveStepLayout(index: number, layout: TimelineLayout): string {

@@ -5,4 +5,4 @@ export * from "./timeline-step-icon";
 export * from "./timeline-detail";
 export * from "./timeline-blockquote";
 export * from "./abstraction";
-export * from "./defaults";
+export * from "./services";

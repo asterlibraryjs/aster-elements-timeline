@@ -4,7 +4,7 @@ import { Constructor } from "@aster-js/core";
 import { LitElement, html, HTMLTemplateResult, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ITimelineRenderer, TimelineLayout } from "./abstraction";
-import { AsterTooltipService, DefaultTimelineRenderer, DefaultTimelineStepRenderer } from "./defaults";
+import { AsterTooltipService, DefaultTimelineRenderer, DefaultTimelineStepRenderer } from "./services";
 import styles from "./timeline.css";
 
 @customElement("aster-timeline")
