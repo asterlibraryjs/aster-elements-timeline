@@ -1,2 +1,2 @@
-export * from "../defaults/default-timeline-renderer";
-export * from "../defaults/timeline-step-renderer";
+export * from "../services/default-timeline-renderer";
+export * from "../services/timeline-step-renderer";

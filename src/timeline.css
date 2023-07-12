@@ -1,6 +1,8 @@
 :host {
     --_aster-timeline__border-color: var(--aster-timeline__border-color, #808080);
     --_aster-timeline__step-icon-size: var(--aster-timeline__step-icon-size, 26px);
+    --_aster-timeline__step-detail-gap: var(--aster-timeline__step-detail-gap, 10px);
+    --_aster-timeline__step-blockquote-margins: var(--aster-timeline__step-blockquote-margins, 14px);
     --_aster-timeline__lead-time-font-size: var(--aster-timeline__lead-time-font-size, 0.8em);
     display: block;
     box-sizing: border-box;
@@ -13,13 +15,14 @@
 
 .container.horizontal {
     display: grid;
+    gap: var(--_aster-timeline__step-detail-gap) 0;
     grid-template-rows:  minmax(0, 1fr) var(--_aster-timeline__step-icon-size) minmax(0, 1fr);
     grid-auto-columns: minmax(0, max-content) minmax(0, 1fr);
 }
 
 .container.vertical {
     display: grid;
-    gap: 0 10px;
+    gap: 0 var(--_aster-timeline__step-detail-gap);
     grid-auto-rows: minmax(0, max-content) minmax(0, 1fr);
     grid-template-columns: minmax(0, 1fr) var(--_aster-timeline__step-icon-size) minmax(0, 1fr);
 }
@@ -44,7 +47,26 @@
     align-self: center;
 }
 
-.vertical > aster-timeline-blockquote {
+.vertical > .aster-timeline-detail-container {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontal > .aster-timeline-detail-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.horizontal > .aster-timeline-detail-container > :where(aster-timeline-blockquote, aster-timeline-detail) {
+    padding-left: var(--_aster-timeline__step-blockquote-margins);
+    height: 100%;
+}
+
+.vertical > .aster-timeline-detail-container > :where(aster-timeline-blockquote, aster-timeline-detail) {
+    padding-top: var(--_aster-timeline__step-blockquote-margins);
+    width: 100%;
 }
