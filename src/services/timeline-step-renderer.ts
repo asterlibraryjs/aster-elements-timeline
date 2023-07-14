@@ -48,7 +48,7 @@ export abstract class TimelineStepRenderer<T> implements ITimelineStepRenderer<T
     protected onDidMouseEnterStep(ev: UIEvent, item: T, index: number, items: T[], opts: TimelineRenderingOptions): void {
         const content = this.renderTooltipContent(item, index, items, opts);
         if (content) {
-            this._toolTipService.show(ev, content);
+            this._toolTipService.show(ev, content, item, index, items, opts);
         }
     }
 

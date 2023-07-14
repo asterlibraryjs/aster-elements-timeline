@@ -47,7 +47,7 @@ export class CustomDetail extends LitElement {
     }
 
     getTooltip() {
-        return html`That what <b>she</b> said`;
+        return html`That what <b>she</b> said<br />`;
     }
 
     getDetail(item: any, idx: number) {
